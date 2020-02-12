@@ -75,11 +75,34 @@ register_activation_hook( __FILE__, 'myplugin_activate' );
 function myplugin_activate() {
 global $wpdb;
 // le añado el prefijo a la tabla
-$table_name = $wpdb->prefix . 'palabras_desagradables';
+$table_name = $wpdb->prefix . 'palabras_malsonantes';
 $wpdb->insert($table_name, array('palabras' => 'caca'),array('%s'));
 $wpdb->insert($table_name, array('palabras' => 'mierda'),array('%s'));
 $wpdb->insert($table_name, array('palabras' => 'pis'),array('%s'));
 $wpdb->insert($table_name, array('palabras' => 'polla'),array('%s'));
 $wpdb->insert($table_name, array('palabras' => 'puta'),array('%s'));
 $wpdb->insert($table_name, array('palabras' => 'cabrón'),array('%s'));
+}
+
+
+
+//Filtro que sustituye palabras malsonantes, recogiéndolas de la base de datos
+add_filter( 'the_content', 'palabras_malsonantes_filter' );
+//Función que hace un select que recoge el resultado en forma de array asociativo, del que sacamos la palabra sobre la quie se hace la búsqueda en la página.
+function palabras_malsonantes_filter( $text ) {
+global $wpdb;
+$result = $wpdb->get_results( 'SELECT palabras FROM wp_2palabras_malsonantes', ARRAY_A );
+//Substituye cabrón en este caso
+return str_replace( $result[0],'c*****', $text );
+}
+
+
+//Filtro que sustituye palabras malsonantes, recogiéndolas de la base de datos
+add_filter( 'the_content', 'palabras_malsonantes_filter2' );
+//Función que hace un select que recoge el resultado en forma de array asociativo, del que sacamos la palabra sobre la quie se hace la búsqueda en la página.
+function palabras_malsonantes_filter2( $text ) {
+global $wpdb;
+$result = $wpdb->get_results( 'SELECT palabras FROM wp_2palabras_malsonantes', ARRAY_A );
+//Substituye caca 
+return str_replace( $result[1],'c***', $text );
 }
