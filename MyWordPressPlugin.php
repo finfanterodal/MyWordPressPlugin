@@ -67,3 +67,19 @@ palabras varchar(20) PRIMARY KEY
 require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
 dbDelta( $sql );
 }
+
+
+//Se llama a esta acción cuando el plugin es activado de modo que hace los insert
+register_activation_hook( __FILE__, 'myplugin_activate' );
+//Función para insertar una serie de palabras malsonantes en la table creada.
+function myplugin_activate() {
+global $wpdb;
+// le añado el prefijo a la tabla
+$table_name = $wpdb->prefix . 'palabras_desagradables';
+$wpdb->insert($table_name, array('palabras' => 'caca'),array('%s'));
+$wpdb->insert($table_name, array('palabras' => 'mierda'),array('%s'));
+$wpdb->insert($table_name, array('palabras' => 'pis'),array('%s'));
+$wpdb->insert($table_name, array('palabras' => 'polla'),array('%s'));
+$wpdb->insert($table_name, array('palabras' => 'puta'),array('%s'));
+$wpdb->insert($table_name, array('palabras' => 'cabrón'),array('%s'));
+}
