@@ -23,3 +23,24 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with (Plugin Name). If not, see (http://link to your plugin license).
 */
+
+
+
+
+
+//Flitro que llama a la función que le dice qué palabra debe sustituir por otra.
+add_filter( 'the_content', 'renym_wordpress_typo_fix' );
+
+//Filtro para dar un aviso si la contraseña es errónea.
+add_filter( 'login_errors', 'contrasinal_olvidada' );
+
+//Funciñon que reemplaza la primera palabra dada, por la segunda
+function renym_wordpress_typo_fix( $text ) {
+return str_replace( 'WordPress', 'WordPressDAM', $text );
+}
+
+//Función que lanza un aviso cuando escribimos mal nuestra contraseña
+function contrasinal_olvidada(){
+return 'La contraseña es incorreta ATONTADO!';
+}
+
