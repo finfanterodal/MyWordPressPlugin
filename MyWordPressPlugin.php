@@ -26,8 +26,6 @@ along with (Plugin Name). If not, see (http://link to your plugin license).
 
 
 
-
-
 //Flitro que llama a la función que le dice qué palabra debe sustituir por otra.
 add_filter( 'the_content', 'renym_wordpress_typo_fix' );
 
@@ -44,3 +42,28 @@ function contrasinal_olvidada(){
 return 'La contraseña es incorreta ATONTADO!';
 }
 
+
+/*DATABASE*/
+
+// Al activvar el plugin se crea la tabla en la base de datos y se insertan las palabras desagradables.
+add_action( 'plugins_loaded', 'create_table_function' );
+
+//Función que crea la tabla en la base de datos cuando es llamada.
+function create_table_function() {
+   
+global $wpdb;
+
+$charset_collate = $wpdb->get_charset_collate();
+
+// le añado el prefijo a la tabla
+$table_name = $wpdb->prefix . 'palabras_malsonantes';
+
+// creamos la sentencia sql
+
+$sql = "CREATE TABLE $table_name (
+palabras varchar(20) PRIMARY KEY
+) $charset_collate;";
+
+require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
+dbDelta( $sql );
+}
